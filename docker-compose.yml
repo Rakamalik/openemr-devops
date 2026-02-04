@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: openemr
+      MYSQL_USER: openemr
+      MYSQL_PASSWORD: openemrpass
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  openemr:
+    image: openemr/openemr:7.0.4
+    depends_on:
+      - mariadb
+    ports:
+      - "8081:80"
+    environment:
+      MYSQL_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: openemr
+      MYSQL_USER: openemr
+      MYSQL_PASSWORD: openemrpass
+
+volumes:
+  dbdata:
+
